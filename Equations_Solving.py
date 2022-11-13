@@ -3,7 +3,7 @@ from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-n=5
+n=3
 Y=np.zeros((4,n))
 V=np.zeros((n,n))
 D=np.zeros((4,n))
