@@ -1,0 +1,258 @@
+[
+    {
+    "geo_point_2d": {
+        "lon": 6.99299613142473,
+        "lat": 47.218585960369495
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    6.983513287879997,
+                    47.22376619664782
+                ],
+                [
+                    7.002478974969464,
+                    47.21340572409118
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "M",
+    "km_agm_von": 18629.0,
+    "km_agm_bis": 22979.0,
+    "bp_anfang": "BREL",
+    "bp_anf_bez": "Les Breuleux-Eglise",
+    "bp_ende": "NOMO",
+    "bp_end_bez": "Le Noirmont",
+    "linienr": 235,
+    "liniename": "Tavannes - Le Noirmont"
+},
+{
+    "geo_point_2d": {
+        "lon": 7.087754351735696,
+        "lat": 47.2238612733013
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    7.092575863300234,
+                    47.223516136438164
+                ],
+                [
+                    7.082932840171158,
+                    47.22420641016444
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "M",
+    "km_agm_von": 10333.0,
+    "km_agm_bis": 11484.0,
+    "bp_anfang": "TRCH",
+    "bp_anf_bez": "Tramelan-Chalet",
+    "bp_ende": "REUS",
+    "bp_end_bez": "Les Reussilles",
+    "linienr": 235,
+    "liniename": "Tavannes - Le Noirmont"
+},
+{
+    "geo_point_2d": {
+        "lon": 7.19188643484722,
+        "lat": 46.97465766356937
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    7.192089003159004,
+                    46.97366153030486
+                ],
+                [
+                    7.191683866535435,
+                    46.975653796833875
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "N",
+    "km_agm_von": 21965.984,
+    "km_agm_bis": 22198.294,
+    "bp_anfang": "KZW",
+    "bp_anf_bez": "Kerzers West (Abzw)",
+    "bp_ende": "KZB",
+    "bp_end_bez": "Kerzers BLS",
+    "linienr": 258,
+    "liniename": "Kerzers West - Kerzers BLS"
+},
+{
+    "geo_point_2d": {
+        "lon": 8.020125526188224,
+        "lat": 46.61836677990855
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    8.023306877476946,
+                    46.622826040921616
+                ],
+                [
+                    8.0169441748995,
+                    46.61390751889548
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "S",
+    "km_agm_von": 16740.0,
+    "km_agm_bis": 18130.0,
+    "bp_anfang": "ROHR",
+    "bp_anf_bez": "Rohr (Grindelwald)",
+    "bp_ende": "GRIG",
+    "bp_end_bez": "Grindelwald Grund",
+    "linienr": 316,
+    "liniename": "Lauterbrunnen - Grindelwald Grund"
+},
+{
+    "geo_point_2d": {
+        "lon": 9.693087206182453,
+        "lat": 47.54821448042276
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    9.680499999426537,
+                    47.54419999613863
+                ],
+                [
+                    9.705674412938372,
+                    47.55222896470689
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "N",
+    "km_agm_von": 0.0,
+    "km_agm_bis": 2460.0,
+    "bp_anfang": "LIND",
+    "bp_anf_bez": "Lindau Insel",
+    "bp_ende": "LIRE",
+    "bp_end_bez": "Lindau-Reutin",
+    "linienr": 885,
+    "liniename": "Lindau - Bregenz - Feldkirch - Bludenz"
+},
+{
+    "geo_point_2d": {
+        "lon": 9.724317380288651,
+        "lat": 47.54081664409054
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    9.742960347638931,
+                    47.52940432347419
+                ],
+                [
+                    9.705674412938372,
+                    47.55222896470689
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "N",
+    "km_agm_von": 2460.0,
+    "km_agm_bis": 6720.0,
+    "bp_anfang": "LIRE",
+    "bp_anf_bez": "Lindau-Reutin",
+    "bp_ende": "LC",
+    "bp_end_bez": "Lochau-H\u00f6rbranz",
+    "linienr": 885,
+    "liniename": "Lindau - Bregenz - Feldkirch - Bludenz"
+},
+{
+    "geo_point_2d": {
+        "lon": 9.723918432887796,
+        "lat": 47.480375958882945
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    9.724681420267101,
+                    47.476671932275245
+                ],
+                [
+                    9.723155445508493,
+                    47.484079985490645
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "N",
+    "km_agm_von": 13200.0,
+    "km_agm_bis": 14710.0,
+    "bp_anfang": "LANO",
+    "bp_anf_bez": "Lauterach Nord (Abzw)",
+    "bp_ende": "LASU",
+    "bp_end_bez": "Lauterach S\u00fcd (Abzw)",
+    "linienr": 885,
+    "liniename": "Lindau - Bregenz - Feldkirch - Bludenz"
+},
+{
+    "geo_point_2d": {
+        "lon": 9.747722051564963,
+        "lat": 47.451794355799834
+    },
+    "geo_shape": {
+        "type": "Feature",
+        "geometry": {
+            "coordinates": [
+                [
+                    9.741219857798619,
+                    47.457098037092834
+                ],
+                [
+                    9.754224245331306,
+                    47.44649067450684
+                ]
+            ],
+            "type": "LineString"
+        },
+        "properties": {}
+    },
+    "spurweite": "N",
+    "km_agm_von": 16980.0,
+    "km_agm_bis": 18650.0,
+    "bp_anfang": "WOLF",
+    "bp_anf_bez": "Wolfurt",
+    "bp_ende": "SWVO",
+    "bp_end_bez": "Schwarzach in Vorarlberg",
+    "linienr": 885,
+    "liniename": "Lindau - Bregenz - Feldkirch - Bludenz"
+}
+]

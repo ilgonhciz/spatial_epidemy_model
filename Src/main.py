@@ -20,7 +20,8 @@ def main():
     sbb_graph = SBBGraph(load_sbb_data())
     CH_raster, _ = load_population()
     CH_map = Map()
-    ax.imshow(np.log(CH_map.get_map_array() + 1),cmap="YlGn" )
+    
+    ax.imshow(CH_map.get_map_array(),cmap="YlGn" )
     sbb_graph.plot_sbb_graph(ax,CH_raster.bounds, CH_map.resolution[::-1])
     plt.show()
 
