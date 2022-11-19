@@ -17,14 +17,16 @@ from map import Map
 fig,ax = plt.subplots()
 fig.set_size_inches(20,10)
 def main():
-    sbb_graph = SBBGraph(load_sbb_data())
-    CH_raster, _ = load_population()
-    CH_map = Map()
+    sbb_graph = SBBGraph()
+    CH_raster, population_map = load_population()
+    CH_map = Map(population_map)
     
     ax.imshow(CH_map.get_map_array(),cmap="YlGn" )
-    sbb_graph.plot_sbb_graph(ax,CH_raster.bounds, CH_map.resolution[::-1])
+    #sbb_graph.plot_sbb_graph_from_raw(ax,CH_raster.bounds, CH_map.resolution[::-1])
+    sub_graph = sbb_graph.getGraphConnection("ZUE","ZERM")
+    sbb_graph.plot_sub_sbb_graph(sbb_graph.get_ID_name(), ax,CH_raster.bounds, CH_map.resolution[::-1],  color='green', markersize=0.9,marker='.', alpha = 0.6)
+    sbb_graph.plot_sub_sbb_graph_connection(sub_graph[0], ax,CH_raster.bounds, CH_map.resolution[::-1],  color='red', markersize=2,marker='.', alpha = 0.6)
     plt.show()
 
 if __name__ == "__main__":
-    print(x)
     main()

@@ -1,12 +1,14 @@
 import json
 import rasterio
+from utils import timeit
 
-
+@timeit
 def load_sbb_data():
-    with open("Data/switzerland_data/linie-mit-polygon_short.json") as f:
+    with open("Data/switzerland_data/linie-mit-polygon.json") as f:
         sbb_data = json.load(f)
     return sbb_data
 
+@timeit
 def load_population(country = "CH"):
     population = None 
     if country == "CH":

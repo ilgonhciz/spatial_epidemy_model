@@ -1,20 +1,18 @@
-from data import load_population, load_sbb_data
 from modelunit import ModelUnit
 from station import Station
 import cv2 
 import numpy as np
 import math
 class Map:
-    def __init__(self) -> None:
+    def __init__(self, population_map) -> None:
         self.original_resolution = [] #format x y
-        self.resolution = [24, 16] #format x y
+        self.resolution = [240, 160] #format x y
         self.total_population = 0
-        self.resample()
+        self.resample(population_map)
         self.init_model()
         self.sbb_graph = dict()
     
-    def resample(self, normalizing = True):
-        _, population = load_population()
+    def resample(self, population , normalizing = True):
         self.original_resolution = population.shape[::-1]
         self.map_array = cv2.resize(population, self.resolution)
         self.map_array *= math.prod(self.original_resolution)/math.prod(self.resolution)
