@@ -19,6 +19,6 @@ def timeit(func):
         result = func(*args, **kwargs)
         end_time = time.perf_counter()
         total_time = end_time - start_time
-        print(f'Function {func.__name__}{args} {kwargs} Took {total_time:.4f} seconds')
+        print(f'Method {func.__name__} tooks {total_time:.4f} seconds for execution')
         return result
     return timeit_wrapper

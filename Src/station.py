@@ -7,17 +7,21 @@ from tqdm import tqdm
 from utils import timeit
 from data import load_sbb_data
 
-condition_start = ["M","N","S",None]
 class SBBGraph:
     def __init__(self) -> None:
         #Total list elements 3117
         self.sbb_graph = dict()
         self.sbb_graph_save_name = 'sbb_graph.json'
+        self.ID2pos={}
 
-        if File().processed_data_exist(self.sbb_graph_save_name) and False:
+        self.border = None
+        self.image_size = None
+
+        if File().processed_data_exist(self.sbb_graph_save_name):
             self.load_sbb_graph_from_path()
         else:
             self.sbb_data = load_sbb_data()
+            self.determine_pos_from_keys()
             self.initialize_sbb_graph()
     
     def get_ID_name(self):
@@ -32,36 +36,47 @@ class SBBGraph:
             self.sbb_graph[key].init_from_processed_json(station)
 
     def plot_sbb_graph_from_raw(self, ax, borders, image_shape):
-        for i in self.sbb_data:
-            if i["km_agm_von"] != 0.0:
-                start_index = 0
-                end_index = -1            
-            else:
-                start_index = -1
-                end_index = 0          
-            img_pos = glob2img(i['geo_shape']['geometry']['coordinates'][start_index], borders, image_shape)
-            img_end_pos = glob2img(i['geo_shape']['geometry']['coordinates'][end_index], borders, image_shape)
+        for i in self.sbb_data:    
+            img_pos = glob2img(i['geo_shape']['geometry']['coordinates'][0], borders, image_shape)
+            img_end_pos = glob2img(i['geo_shape']['geometry']['coordinates'][-1], borders, image_shape)
             ax.plot([img_pos[0],img_end_pos[0]], [img_pos[1],img_end_pos[1]], color='green', markersize=0.9,marker='.', alpha = 0.6) 
 
-    def plot_sub_sbb_graph_connection(self, station_list , ax, borders, image_shape, **kwargs):
+    def plot_sub_sbb_graph_connection(self, station_list , ax, **kwargs):
         for i in range(len(station_list)-1):
-            img_pos = glob2img(self.sbb_graph[station_list[i]].pos, borders, image_shape)
-            img_end_pos = glob2img(self.sbb_graph[station_list[i+1]].pos, borders, image_shape)
+            img_pos = self.get_img_pos(station_list[i])
+            img_end_pos = self.get_img_pos(station_list[i+1])
             ax.plot([img_pos[0],img_end_pos[0]], [img_pos[1],img_end_pos[1]], **kwargs) 
 
-    def plot_sub_sbb_graph(self, station_list , ax, borders, image_shape, **kwargs):
+    def plot_sub_sbb_graph(self, station_list , ax, **kwargs):
         for i in range(len(station_list)-1):
-            img_pos = glob2img(self.sbb_graph[station_list[i]].pos, borders, image_shape)
-            for _, neighbour in self.sbb_graph[station_list[i]].neighbour.items():
+            img_pos = self.get_img_pos(station_list[i])
+            for neighbourID, neighbour in self.sbb_graph[station_list[i]].neighbour.items():
                 if station_list[i] =="PLP":
                     kwargs["color"] = "red"
                     kwargs["linewidth"] = 3
                 else:
                     kwargs["color"] = "green"
                     kwargs["linewidth"] = 1
-                img_end_pos = glob2img(neighbour['pos'], borders, image_shape)
+                img_end_pos = self.get_img_pos(neighbourID)
                 ax.plot([img_pos[0],img_end_pos[0]], [img_pos[1],img_end_pos[1]], **kwargs) 
 
+    def determine_pos_from_keys(self):
+        for i in tqdm(self.sbb_data):
+            for key in ['bp_anfang','bp_ende']:
+                if (i[key] not in self.ID2pos.keys()):
+                    self.ID2pos[i[key]] = {"pos":[], "final":[]}
+                for pos in [i['geo_shape']['geometry']['coordinates'][index] for index in [0, -1]]:
+                    if len(self.ID2pos[i[key]]['pos'])<2 :
+                        self.ID2pos[i[key]]['pos'].append(pos)
+                    else:
+                        for potential_coordinate in self.ID2pos[i[key]]['pos']: 
+                            if geodistance.geodesic(pos, potential_coordinate).km < 0.3:
+                                self.ID2pos[i[key]]['final'] = pos
+                        self.ID2pos[i[key]]['pos'].append(pos)
+        for key, pos in tqdm(self.ID2pos.items()):
+            if not pos['final']:
+                print(pos['pos'])
+                pos['final'] = pos['pos'][-1] 
 
     def getConnectionInfos(self, start_station_name, ende_station_name ):
         connections = pySBB.get_connections(start_station_name, ende_station_name)
@@ -76,14 +91,8 @@ class SBBGraph:
     def initialize_sbb_graph(self):
         for i in tqdm(self.sbb_data):
             #connectionInfo = self.getConnectionInfos(i['bp_anf_bez'], i['bp_end_bez'])
-            if i["km_agm_von"] != 0.0:
-                start_index = 0
-                end_index = -1            
-            else: 
-                start_index = -1
-                end_index = 0          
-            start_pos = i['geo_shape']['geometry']['coordinates'][start_index]
-            end_pos = i['geo_shape']['geometry']['coordinates'][end_index]
+            start_pos = i['geo_shape']['geometry']['coordinates'][0]
+            end_pos = i['geo_shape']['geometry']['coordinates'][-1]
             distance = geodistance.geodesic(start_pos, end_pos).km
             if distance < 5:
                 speed = 50
@@ -99,11 +108,11 @@ class SBBGraph:
                         self.sbb_graph[i[key]] = Station()
                     if key == 'bp_anfang':
                         self.sbb_graph[i[key]].start = True
-                        self.sbb_graph[i[key]].append_neighbour(i['bp_ende'], i['bp_end_bez'],end_pos, connectionInfo )
+                        self.sbb_graph[i[key]].append_neighbour(i['bp_ende'], i['bp_end_bez'],self.ID2pos[i['bp_ende']]['final'], connectionInfo )
                     else:
                         self.sbb_graph[i[key]].start = False
-                        self.sbb_graph[i[key]].append_neighbour(i['bp_anfang'], i['bp_anf_bez'],start_pos, connectionInfo)
-                    self.sbb_graph[i[key]].init_from_raw_json(i)
+                        self.sbb_graph[i[key]].append_neighbour(i['bp_anfang'], i['bp_anf_bez'],self.ID2pos[i['bp_anfang']]['final'], connectionInfo)
+                    self.sbb_graph[i[key]].init_from_raw_json(i, self.ID2pos)
         self.save_to_file()
 
     def save_to_file(self):
@@ -137,12 +146,10 @@ class SBBGraph:
             parent_node = explored_stations[parent_node]['parent']
             duration += explored_stations[endID]['duration']
         via_list.append(startID)
-
-            
-        #search_neighbours(startID, endID)
-
         return via_list, duration
 
+    def get_img_pos(self,key):
+        return glob2img(self.sbb_graph[key].pos,self.border, self.image_size)
 
 class Station:
     def __init__(self) -> None:
@@ -158,21 +165,15 @@ class Station:
         self.pos = sbb_data_string['pos']
         self.neighbour = sbb_data_string['neighbour']
 
-    def init_from_raw_json(self, sbb_data_string):
-        if sbb_data_string["spurweite"] in condition_start:
-            start_index = 0
-            end_index = -1            
-        else: 
-            start_index = -1
-            end_index = 0          
+    def init_from_raw_json(self, sbb_data_string, ID2pos):       
         if self.start:
             self.name["ID"] = sbb_data_string['bp_anfang'] 
             self.name["name"] = sbb_data_string['bp_anf_bez'] 
-            self.pos = sbb_data_string['geo_shape']['geometry']['coordinates'][start_index]
+            self.pos = ID2pos[sbb_data_string['bp_anfang']]['final']
         else:
             self.name["ID"] = sbb_data_string['bp_ende'] 
             self.name["name"] = sbb_data_string['bp_end_bez'] 
-            self.pos = sbb_data_string['geo_shape']['geometry']['coordinates'][end_index]
+            self.pos = ID2pos[sbb_data_string['bp_ende']]['final']
 
     def append_neighbour(self, ID, name, pos , duration = 0):
         self.neighbour[ID] = {"name": name, "pos":pos,'duration':duration}
