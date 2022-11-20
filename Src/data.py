@@ -35,7 +35,7 @@ def load_USA_airport_data(): #loads the CSV for U.S. airports including location
         USA_airport_data = csv.reader(a, delimiter = ',')
     return USA_airport_data
 
-def load_USA_airroute_data(): #loads the CSV for U.S. air routes including source and destination IATA codes
+def load_USA_airroutes_data(): #loads the CSV for U.S. air routes including source and destination IATA codes
     with open ("Data/USA/routes_USA.csv") as b:
-        USA_airroute_data = csv.reader(b, delimiter = ',')
-    return USA_airroute_data
+        USA_airroutes_data = csv.reader(b, delimiter = ',')
+    return USA_airroutes_data
