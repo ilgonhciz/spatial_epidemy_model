@@ -1,5 +1,6 @@
 import json
 import rasterio
+import csv
 from utils import timeit
 
 @timeit
@@ -29,3 +30,12 @@ def load_population(country = "CH"):
 
     return CH_raster,population 
 
+def load_USA_airport_data(): #loads the CSV for U.S. airports including location (city + coordinates), name, and IATA code
+    with open ("Data/USA/airports_usa.csv") as a:
+        USA_airport_data = csv.reader(a, delimiter = ',')
+    return USA_airport_data
+
+def load_USA_airroute_data(): #loads the CSV for U.S. air routes including source and destination IATA codes
+    with open ("Data/USA/routes_USA.csv") as b:
+        USA_airroute_data = csv.reader(b, delimiter = ',')
+    return USA_airroute_data
