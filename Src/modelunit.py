@@ -13,6 +13,8 @@ class ModelUnit:
         self.cutoff_delta = [int(self.cutoff_radius//size[0]), int(self.cutoff_radius//size[1])]
         self.population = local_population_density if local_population_density > 0 else 0
         self.sir_params = sir_params
+        self.beta=0.1
+
 
         #percentage of the population in this ModelUnit 
         self.s = self.population
@@ -40,16 +42,7 @@ class ModelUnit:
             return sbb_inflow
         else:
             return 0
-        
-    def compute_outflow_sbb(self):
-        neighbour_inflow = 0
-        if self.stations:
-            for station in self.stations:
-                for neighbourID in station.neighbour.keys():
-                    neighbour_pos = self.sbb_graph.get_img_pos(neighbourID)
-                    neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
-                    neighbour_inflow += neighbour_unit.compute_outflow()
-        return self.outflow + neighbour_inflow
+
 
     def compute_inflow_local(self):
         local_inflow = 0 
@@ -65,6 +58,7 @@ class ModelUnit:
     def compute_inflow(self):
         #extract the number of infected people coming from the outside
         self.inflow = self.compute_inflow_sbb() + self.compute_inflow_local()
+        pass
         return self.inflow
 
     def compute_outflow(self):
@@ -83,3 +77,20 @@ class ModelUnit:
         self.s = 1 - self.i
         self.r = 0
 
+
+
+
+
+
+
+
+   #not used momentarily
+    def compute_outflow_sbb(self):
+        neighbour_inflow = 0
+        if self.stations:
+            for station in self.stations:
+                for neighbourID in station.neighbour.keys():
+                    neighbour_pos = self.sbb_graph.get_img_pos(neighbourID)
+                    neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
+                    neighbour_inflow += neighbour_unit.compute_outflow()
+        return self.outflow + neighbour_inflow
