@@ -6,3 +6,4 @@
 * Geo Data Visualization Methods: https://towardsdatascience.com/visualising-global-population-datasets-with-python-c87bcfc8c6a6
 * Weekly Meetings: https://docs.google.com/document/d/1WjRgGYknTx_IZWcyx3EKL3kB5jwHo4zlZ83-HDmQUWw/edit
 * Final report on overleaf: https://www.overleaf.com/4445946635gfzhqzqmvfmh
+* Google folder with all references: https://drive.google.com/drive/folders/1pHr12b_hbOArYMnK83dygjF9ecZNYtw_
