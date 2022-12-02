@@ -13,11 +13,17 @@ class ModelUnit:
         self.cutoff_delta = [int(self.cutoff_radius//size[0]), int(self.cutoff_radius//size[1])]
         self.population = local_population_density if local_population_density > 0 else 0
         self.sir_params = sir_params
+        self.delta = [0.7, 0.7, 0.0]
+        self.gamma = 0.001
+        self.alpha = 0.1
+        self.beta = 0.1
 
         #percentage of the population in this ModelUnit 
         self.s = self.population
         self.i = 0
         self.r = 0
+        self.v = 0
+        self.d = 0
 
         self.neightbour = []
         self.stations = []
@@ -40,16 +46,7 @@ class ModelUnit:
             return sbb_inflow
         else:
             return 0
-        
-    def compute_outflow_sbb(self):
-        neighbour_inflow = 0
-        if self.stations:
-            for station in self.stations:
-                for neighbourID in station.neighbour.keys():
-                    neighbour_pos = self.sbb_graph.get_img_pos(neighbourID)
-                    neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
-                    neighbour_inflow += neighbour_unit.compute_outflow()
-        return self.outflow + neighbour_inflow
+
 
     def compute_inflow_local(self):
         local_inflow = 0 
@@ -65,6 +62,7 @@ class ModelUnit:
     def compute_inflow(self):
         #extract the number of infected people coming from the outside
         self.inflow = self.compute_inflow_sbb() + self.compute_inflow_local()
+        pass
         return self.inflow
 
     def compute_outflow(self):
@@ -79,7 +77,36 @@ class ModelUnit:
 
     def update_SIR(self):
         input = self.inflow
-        self.i = 1.05 * (self.i + 0.1* input/self.population) if self.population > 0 else 0
-        self.s = 1 - self.i
-        self.r = 0
+        s = self.s
+        i = self.i
+        r = self.r
+        v = self.v
+        p = self.population
+        if p>0:
+            self.s += self.alpha * i * s / p - self.delta[0]*s
+            self.i += self.alpha * i * s / p - (self.beta + self.gamma) * i - self.delta[1] * i + input
+            self.r += self.beta * i - self.delta[2] * r
+            self.v += self.delta[0] * s + self.delta[1] * i + self.delta[2] * r
+            self.s = min(max(0, self.s), self.population)
+            self.i = min(max(0, self.i), self.population)
+            self.r = min(max(0, self.r), self.population)
+            self.v = min(max(0, self.v), self.population)
 
+            self.population = self.s + self.i + self.r + self.v
+            self.d += self.gamma * i
+
+
+
+
+
+
+   #not used momentarily
+    def compute_outflow_sbb(self):
+        neighbour_inflow = 0
+        if self.stations:
+            for station in self.stations:
+                for neighbourID in station.neighbour.keys():
+                    neighbour_pos = self.sbb_graph.get_img_pos(neighbourID)
+                    neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
+                    neighbour_inflow += neighbour_unit.compute_outflow()
+        return self.outflow + neighbour_inflow
