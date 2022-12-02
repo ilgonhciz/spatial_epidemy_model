@@ -9,7 +9,7 @@ class Map:
         self.sbb_graph = sbb_graph
         self.border = border
         self.original_resolution = [] #format x y
-        self.resolution = [240, 160] #format x y
+        self.resolution = [160, 80] #format x y
         self.total_population = 0
         self.resample(population_map)
         self.init_model()
@@ -57,10 +57,16 @@ class Map:
             return self.plot_preparation(np.array([[ unit.i for unit in row] for row in self.model_array]))
         elif visualize_type=="s":
             return self.plot_preparation(np.array([[ unit.s for unit in row] for row in self.model_array]))
-
+        elif visualize_type=='r':
+            return self.plot_preparation(np.array([[unit.r for unit in row] for row in self.model_array]))
+        elif visualize_type=='v':
+            return self.plot_preparation(np.array([[unit.v for unit in row] for row in self.model_array]))
+        else:
+            return self.plot_preparation(np.array([[unit.d for unit in row] for row in self.model_array]))
     def plot_preparation(self, default_map):
         offset = 1
         default_map = np.nan_to_num(default_map, nan = 0.8 - offset )
+        #default_map[default_map<1e-5]=1e-5
         modified_map = np.log((default_map + offset))
         return modified_map
 

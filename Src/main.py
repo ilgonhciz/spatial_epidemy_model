@@ -3,7 +3,7 @@ from data import load_population
 from station import SBBGraph
 from map import Map
 fig,ax = plt.subplots()
-fig.set_size_inches(20,10)
+fig.set_size_inches(10,5)
 def main():
     sbb_graph = SBBGraph()
     CH_raster, population_map = load_population()
@@ -29,6 +29,7 @@ def main():
         ax.imshow(CH_map.get_map_array('p'),cmap="YlGn" , alpha= 0.8)
         CH_map.update_map()
         ax.imshow(CH_map.get_map_array('i'),cmap="Reds" , alpha= 0.3)
+        ax.imshow(CH_map.get_map_array('d'), cmap="Greens", alpha=0.3)
         plt.pause(0.1)
     
     plt.show()

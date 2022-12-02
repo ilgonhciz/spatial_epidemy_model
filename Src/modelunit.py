@@ -13,13 +13,17 @@ class ModelUnit:
         self.cutoff_delta = [int(self.cutoff_radius//size[0]), int(self.cutoff_radius//size[1])]
         self.population = local_population_density if local_population_density > 0 else 0
         self.sir_params = sir_params
-        self.beta=0.1
-
+        self.delta = [0.7, 0.7, 0.0]
+        self.gamma = 0.001
+        self.alpha = 0.1
+        self.beta = 0.1
 
         #percentage of the population in this ModelUnit 
         self.s = self.population
         self.i = 0
         self.r = 0
+        self.v = 0
+        self.d = 0
 
         self.neightbour = []
         self.stations = []
@@ -73,11 +77,23 @@ class ModelUnit:
 
     def update_SIR(self):
         input = self.inflow
-        self.i = 1.05 * (self.i + 0.1* input/self.population) if self.population > 0 else 0
-        self.s = 1 - self.i
-        self.r = 0
+        s = self.s
+        i = self.i
+        r = self.r
+        v = self.v
+        p = self.population
+        if p>0:
+            self.s += self.alpha * i * s / p - self.delta[0]*s
+            self.i += self.alpha * i * s / p - (self.beta + self.gamma) * i - self.delta[1] * i + input
+            self.r += self.beta * i - self.delta[2] * r
+            self.v += self.delta[0] * s + self.delta[1] * i + self.delta[2] * r
+            self.s = min(max(0, self.s),self.population)
+            self.i = min(max(0, self.i), self.population)
+            self.r = min(max(0, self.r), self.population)
+            self.v = min(max(0, self.v), self.population)
 
-
+            self.population = self.s + self.i + self.r + self.v
+            self.d += self.gamma * i
 
 
 
