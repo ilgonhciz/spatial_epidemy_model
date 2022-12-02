@@ -9,7 +9,7 @@ class Map:
         self.sbb_graph = sbb_graph
         self.border = border
         self.original_resolution = [] #format x y
-        self.resolution = [160, 80] #format x y
+        self.resolution = [80, 40] #format x y
         self.total_population = 0
         self.resample(population_map)
         self.init_model()

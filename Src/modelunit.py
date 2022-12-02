@@ -87,7 +87,7 @@ class ModelUnit:
             self.i += self.alpha * i * s / p - (self.beta + self.gamma) * i - self.delta[1] * i + input
             self.r += self.beta * i - self.delta[2] * r
             self.v += self.delta[0] * s + self.delta[1] * i + self.delta[2] * r
-            self.s = min(max(0, self.s),self.population)
+            self.s = min(max(0, self.s), self.population)
             self.i = min(max(0, self.i), self.population)
             self.r = min(max(0, self.r), self.population)
             self.v = min(max(0, self.v), self.population)
