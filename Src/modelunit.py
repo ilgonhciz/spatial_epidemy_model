@@ -10,7 +10,7 @@ class ModelUnit:
         self.parent_model_array = None
         self.sbb_graph = None
 
-        self.cutoff_radius = 5 #km
+        self.cutoff_radius = 3 #km
         self.cutoff_delta = [int(self.cutoff_radius//size[0]), int(self.cutoff_radius//size[1])]
         self.population = local_population_density if local_population_density > 1e-5 else 0
         self.empty = False if local_population_density > 1e-5 else True
@@ -61,14 +61,16 @@ class ModelUnit:
     def compute_inflow_local(self):
         local_inflow = 0 
         for delta_x in range(-self.cutoff_delta[0],self.cutoff_delta[0]+1):
-            if self.pos[1] + delta_x < len(self.parent_model_array[0]) and self.pos[1] + delta_x > 0:
-                for delta_y in range(-self.cutoff_delta[1],self.cutoff_delta[1]+1):
-                    if self.pos[0] + delta_y < len(self.parent_model_array) and self.pos[0] + delta_y > 0:
-                        if math.sqrt(delta_x**2 + delta_y**2) <= 2*self.cutoff_radius/(self.size[0]+self.size[1]):
-                            if delta_x != 0 and delta_y!=0:
-                                if not self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ].empty:
-                                    neighbour = self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ] 
-                                    local_inflow += neighbour.outflow / ( math.sqrt(delta_x**2 + delta_y**2))
+            if self.pos[1] + delta_x >= len(self.parent_model_array[0]) or self.pos[1] + delta_x < 0:
+                continue
+            for delta_y in range(-self.cutoff_delta[1],self.cutoff_delta[1]+1):
+                if self.pos[0] + delta_y >= len(self.parent_model_array) or self.pos[0] + delta_y < 0:
+                    continue
+                if math.sqrt(delta_x**2 + delta_y**2) <= 2*self.cutoff_radius/(self.size[0]+self.size[1]):
+                    if delta_x != 0 and delta_y!=0:
+                        if not self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ].empty:
+                            neighbour = self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ] 
+                            local_inflow += neighbour.outflow / ( math.sqrt(delta_x**2 + delta_y**2))
         return local_inflow
 
     def compute_inflow(self):
@@ -91,11 +93,16 @@ class ModelUnit:
 
     def isBorder(self):
         has_neighbour = False
-        for delta_pos in [[0,1],[0,-1],[1,0],[-1,0],[-1,1],[-1,-1],[1,1],[1,-1]]: 
-            if not self.parent_model_array[self.pos[0],self.pos[1]+1].empty:
-                has_neighbour = True
-                self.neighbour_rel_pos = delta_pos
-                break
+        if self.empty:
+            for delta_pos in [[0,1],[0,-1],[1,0],[-1,0],[-1,1],[-1,-1],[1,1],[1,-1]]: 
+                if self.pos[1]+ delta_pos[1] >= len(self.parent_model_array[0]) or self.pos[1]+ delta_pos[1] < 0:
+                    continue
+                if self.pos[0]+ delta_pos[0] >= len(self.parent_model_array) or self.pos[0]+ delta_pos[0] < 0:
+                    continue
+                if not self.parent_model_array[self.pos[0]+ delta_pos[0]][self.pos[1]+ delta_pos[1]].empty:
+                    has_neighbour = True
+                    self.neighbour_rel_pos = delta_pos
+                    break
         self.on_border = self.empty and has_neighbour
 
     def update_SIR(self):

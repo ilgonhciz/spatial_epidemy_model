@@ -7,17 +7,17 @@ fig.set_size_inches(16,8)
 #fig2, ax2 = plt.subplots()
 def main():
     sbb_graph = SBBGraph()
-    CH_raster, population_map = load_population()
+    CH_raster, population_map = load_population("CH")
 
     border = CH_raster.bounds 
-    CH_map = Map(population_map,sbb_graph, border)
+    CH_map = Map(population_map,sbb_graph, border, "CH")
     image_shape = CH_map.resolution[::-1]
 
     sbb_graph.border = border 
     sbb_graph.image_size = image_shape
     
     #ax.imshow(CH_map.get_map_array('i'),cmap="Reds" , alpha= 0.3)
-
+    
     #sbb_graph.plot_sbb_graph_from_raw(ax, border, image_shape)
     #sub_graph = sbb_graph.getGraphConnection("ZUE","GRIG")
     #sbb_graph.plot_sub_sbb_graph_connection(sub_graph[0], ax,  color='red', markersize=2,marker='.', alpha = 0.6)

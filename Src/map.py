@@ -5,20 +5,45 @@ import math
 from utils import glob2img, timeit
 from station import SBBGraph
 from copy import deepcopy
+from dataclasses import dataclass
+
+@dataclass
+class BoundingBox:
+    left:float = 0
+    bottom: float = 0
+    right:float = 0
+    top:float = 0 
 class Map:
-    def __init__(self, population_map, sbb_graph, border):
+    def __init__(self, population_map, sbb_graph, border, country = "CH"):
         self.sbb_graph = sbb_graph
-        self.border = border
-        self.original_resolution = [] #format x y
-        self.resolution = [320, 160] #format x y
+        self.country = country
+        self.border = border#BoundingBox(border.left,border.bottom, border.right, border.top)
+        if country == "CH":
+            self.original_resolution = population_map.shape[::-1] #format x y
+        elif country == "USA":
+            crop_left = 5800
+            crop_right = 14000
+            crop_top = 2400
+            crop_bottom = 5800
+            cropped_border = BoundingBox()
+            cropped_border.left = self.border.left + (self.border.right - self.border.left) * crop_left / population_map.shape[1]
+            cropped_border.right = self.border.left + (self.border.right - self.border.left) * crop_right / population_map.shape[1]
+            cropped_border.top = self.border.top + (self.border.bottom - self.border.top) * crop_top / population_map.shape[0]
+            cropped_border.bottom = self.border.top + (self.border.bottom - self.border.top) * crop_bottom / population_map.shape[0]
+            self.border = cropped_border
+            population_map = population_map[crop_top:crop_bottom,crop_left:crop_right]
+            self.original_resolution = population_map.shape[::-1]
+
+
+        self.resolution = [480, 240] #format x y
         self.total_population = 0
         self.resample(population_map)
         self.init_model()
-        self.init_sbb_station()
-        print("finished initializing")
-    
+        if self.country == 'CH':
+            self.init_sbb_station()
+        print("finished initializing")    
+
     def resample(self, population , normalizing = True):
-        self.original_resolution = population.shape[::-1]
         self.map_array = cv2.resize(population, self.resolution)
         #self.map_array = cv2.GaussianBlur(self.map_array,(1,1),0)
         self.map_array *= math.prod(self.original_resolution)/math.prod(self.resolution)
@@ -30,19 +55,24 @@ class Map:
         self.model_array = [[ModelUnit(self.map_array[y,x], [y,x], size=size) for x in range(self.resolution[0])] for y in range(self.resolution[1])]
         for rows in self.model_array:
             for unit in rows:
-                if not unit.empty:
-                    unit.parent_model_array = self.model_array
-                    unit.sbb_graph = self.sbb_graph
-    
+                unit.parent_model_array = self.model_array
+                unit.sbb_graph = self.sbb_graph
+                unit.isBorder()
+
     def init_sbb_station(self):
         station_to_delete = []
         for key, station in self.sbb_graph.sbb_graph.items():
             img_pos = glob2img(station.pos, self.border,self.resolution[::-1])
             if (0 < img_pos[0] < self.resolution[0]) and (0 < img_pos[1] < self.resolution[1]):
-                if isinstance(self.model_array[img_pos[1]][img_pos[0]], ModelUnit):   
+                if self.model_array[img_pos[1]][img_pos[0]].on_border:
+                    new_posx = img_pos[0] + self.model_array[img_pos[1]][img_pos[0]].neighbour_rel_pos[1]
+                    new_posy = img_pos[1] + self.model_array[img_pos[1]][img_pos[0]].neighbour_rel_pos[0]
+                    img_pos = [new_posx, new_posy]   
+                if not self.model_array[img_pos[1]][img_pos[0]].empty:
                     self.model_array[img_pos[1]][img_pos[0]].stations.append(station)
                     #self.model_array[img_pos[1]][img_pos[0]].population = 0.1
-                elif self.model_array[img_pos[1]][img_pos[0]].on_border:
+                else:
+                    #pass
                     station_to_delete.append(key)
             else:   
                 station_to_delete.append(key)
@@ -55,9 +85,11 @@ class Map:
             for unit in rows:
                 unit.init_neighbour_station() 
 
-    def get_map_array(self, visualize_type="p"):
-        if visualize_type=="p":
+    def get_map_array(self, visualize_type="p_raw"):
+        if visualize_type=="p_raw":
             return self.plot_preparation(np.array(self.map_array), base_map=True)
+        if visualize_type=="p":
+            return self.plot_preparation(np.array([[ unit.population for unit in row] for row in self.model_array]))
         elif visualize_type=="i":
             return self.plot_preparation(np.array([[ unit.i for unit in row] for row in self.model_array]))
         elif visualize_type=="s":
@@ -71,10 +103,11 @@ class Map:
             
     def plot_preparation(self, default_map, base_map = False):
         offset = 1
-        scaling = 25
+        scaling = 10000
         #default_map = np.nan_to_num(default_map, nan = 0.5 - offset )
         if base_map:
             default_map[default_map == 0] = (0.5 - offset)/scaling
+        #default_map[ default_map<= 0.001] = 0.5
         #default_map[default_map<1e-5]=1e-5
         modified_map = np.log((scaling*default_map + offset))/np.log(scaling + offset)
         modified_map[0,0] = -1
