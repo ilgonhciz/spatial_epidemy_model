@@ -10,7 +10,7 @@ class USA_Air_Graph:
         self.usa_air_graph = dict()
         self.usa_air_graph_save_name = 'usa_air_graph.json'
 
-        self.ID2pos={"id","name","pos"}
+        self.ID2pos={}
         self.destindex = int()
 
         self.border = None
@@ -60,22 +60,22 @@ class USA_Air_Graph:
 
     def determine_pos(self):
         for i in tqdm(self.usa_airport_data):
-            if self.usa.airport_data['IATA'](i) not in self.ID2pos[i[key]['id']]:
-                self.ID2pos[i[key]['id']] = self.usa.airport_data['IATA'](i)
-                self.ID2pos[i[key]['id']['name']] = self.usa.airport_data['IATA'](i)
-                self.ID2pos[i[key]['id']['name']['pos']] = self.usa.airport_data['Latitude','Longitude'](i)
+            if self.usa_airport_data['IATA'](i) not in self.ID2pos[i[key]['id']]:
+                self.ID2pos[i[key]['id']] = self.usa_airport_data['IATA'](i)
+                self.ID2pos[i[key]['id']['name']] = self.usa_airport_data['IATA'](i)
+                self.ID2pos[i[key]['id']['name']['pos']] = self.usa_airport_data['Latitude','Longitude'](i)
             for j in tqdm(self.usa_airroutes_data):
-                if self.usa.airport_data['IATA'](i) not in self.usa_airroutes_data['Source.airport'](j):   
+                if self.usa_airport_data['IATA'](i) not in self.usa_airroutes_data['Source.airport'](j):   
                         
-                    if self.usa.airport_data['IATA'](i) in self.ID2pos[i[key]['id']]:
-                        if self.usa.airroutes_data['Source.airport'](j) in self.ID2pos[i[key]['id']['name']]: 
+                    if self.usa_airport_data['IATA'](i) in self.ID2pos[i[key]['id']]:
+                        if self.usa_airroutes_data['Source.airport'](j) in self.ID2pos[i[key]['id']['name']]: 
                             return
-                        elif self.usa.airroutes_data['Destination.airport'](j) in self.ID2pos[i[key]['id']['name']]:
+                        elif self.usa_airroutes_data['Destination.airport'](j) in self.ID2pos[i[key]['id']['name']]:
                             return
                         else:
-                            self.ID2pos[i[key]['id']['name']] = self.usa.airroutes_data['Destination.airport'](j)
-                            self.destindex = self.usa.airport_data.index(self.usa.airroutes_data['Destination.airport'](j))
-                            self.ID2pos[i[key]['id']['name']['pos']] = self.usa.airport_data['Latitude','Longitude'](self.destindex)
+                            self.ID2pos[i[key]['id']['name']] = self.usa_airroutes_data['Destination.airport'](j)
+                            self.destindex = self.usa_airport_data.index(self.usa_airroutes_data['Destination.airport'](j))
+                            self.ID2pos[i[key]['id']['name']['pos']] = self.usa_airport_data['Latitude','Longitude'](self.destindex)
 
    
     def getConnections(self):
