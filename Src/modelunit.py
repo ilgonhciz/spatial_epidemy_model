@@ -1,25 +1,26 @@
 import math
 import numpy as np
 from random import random
-
+from file import parameters_config
 class ModelUnit:
-    def __init__(self,local_population_density, position ,sir_params = None, size = [1, 1]):
+    def __init__(self,local_population_density, position, size = [1, 1]):
+        self.cutoff_radius = parameters_config["modelunit"]["cutoff_radius"] #km
+        self.delta = parameters_config["modelunit"]["delta"]
+        self.gamma = parameters_config["modelunit"]["gamma"]
+        self.alpha = parameters_config["modelunit"]["alpha"]
+        self.beta = parameters_config["modelunit"]["beta"]
+        
         self.pos = position
         self.size = size
 
         self.parent_model_array = None
-        self.sbb_graph = None
+        self.transportation_graph = None
 
-        self.cutoff_radius = 3 #km
+
         self.cutoff_delta = [int(self.cutoff_radius//size[0]), int(self.cutoff_radius//size[1])]
         self.population = local_population_density if local_population_density > 1e-5 else 0
         self.empty = False if local_population_density > 1e-5 else True
         
-        self.sir_params = sir_params
-        self.delta = [0.01, 0.01, 0.01]
-        self.gamma = 0.001
-        self.alpha = 0.1
-        self.beta = 0.1
 
         #percentage of the population in this ModelUnit 
         self.s = self.population
@@ -39,21 +40,21 @@ class ModelUnit:
     def init_neighbour_station(self):
         if self.stations:
             for station in self.stations:
-                for neighbourID in station.neighbour.keys():
+                for neighbourID, neighbour in station.neighbour.items():
                     if neighbourID not in self.neightbour_stations and neighbourID not in [station.name["ID"] for station in self.stations]:
-                        self.neightbour_stations.append(neighbourID)
+                        self.neightbour_stations.append([neighbourID, neighbour['duration']])
     
-    def compute_inflow_sbb(self):
-        sbb_inflow = 0
+    def compute_inflow_transport(self):
+        transportation_inflow = 0
         if self.stations:
-            for neighbourID in self.neightbour_stations:
-                neighbour_pos = self.sbb_graph.get_img_pos(neighbourID)
+            for neighbourID, duration in self.neightbour_stations:
+                neighbour_pos = self.transportation_graph.get_img_pos(neighbourID)
                 if neighbour_pos[1] >= len(self.parent_model_array) or neighbour_pos[0] >= len(self.parent_model_array[0]):
                     continue
                 neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
                 if neighbour_unit:
-                    sbb_inflow += neighbour_unit.compute_outflow()
-            return sbb_inflow
+                    transportation_inflow += neighbour_unit.compute_outflow() / (4 * duration ** 2) 
+            return transportation_inflow
         else:
             return 0
 
@@ -75,7 +76,7 @@ class ModelUnit:
 
     def compute_inflow(self):
         #extract the number of infected people coming from the outside
-        self.inflow = self.compute_inflow_sbb() + self.compute_inflow_local() # +
+        self.inflow = self.compute_inflow_transport() + self.compute_inflow_local() # +
         return self.inflow * self.population
         #return 0
 
@@ -112,8 +113,6 @@ class ModelUnit:
         r = self.r
         v = self.v
         p = self.population
-        if self.pos[0] == 34 and self.pos[1] == 182:
-            print("hi")
         if p>0:
             self.s = s - self.alpha * i * s / p - self.delta[0]*s - input
             self.i = i + self.alpha * i * s / p - (self.beta + self.gamma) * i - self.delta[1] * i + input
@@ -138,7 +137,7 @@ class ModelUnit:
         if self.stations:
             for station in self.stations:
                 for neighbourID in station.neighbour.keys():
-                    neighbour_pos = self.sbb_graph.get_img_pos(neighbourID)
+                    neighbour_pos = self.transportation_graph.get_img_pos(neighbourID)
                     neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
                     neighbour_inflow += neighbour_unit.compute_outflow()
         return self.outflow + neighbour_inflow
