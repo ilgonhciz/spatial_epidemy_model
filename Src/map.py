@@ -1,12 +1,10 @@
-from modelunit import ModelUnit
 import cv2 
 import numpy as np
 import math
 from utils import glob2img, timeit
-from station import SBBGraph
-from copy import deepcopy
+from modelunit import ModelUnit
 from dataclasses import dataclass
-
+from file import parameters_config
 @dataclass
 class BoundingBox:
     left:float = 0
@@ -14,8 +12,10 @@ class BoundingBox:
     right:float = 0
     top:float = 0 
 class Map:
-    def __init__(self, population_map, sbb_graph, border, country = "CH"):
-        self.sbb_graph = sbb_graph
+    def __init__(self, population_map, graph, border, country = "CH"):
+        self.resolution = parameters_config['map']['resolution'] #format x y
+        
+        self.transportation_graph = graph
         self.country = country
         self.border = border#BoundingBox(border.left,border.bottom, border.right, border.top)
         if country == "CH":
@@ -35,12 +35,10 @@ class Map:
             self.original_resolution = population_map.shape[::-1]
 
 
-        self.resolution = [480, 240] #format x y
         self.total_population = 0
         self.resample(population_map)
         self.init_model()
-        if self.country == 'CH':
-            self.init_sbb_station()
+        self.init_sbb_station()
         print("finished initializing")    
 
     def resample(self, population , normalizing = True):
@@ -56,12 +54,12 @@ class Map:
         for rows in self.model_array:
             for unit in rows:
                 unit.parent_model_array = self.model_array
-                unit.sbb_graph = self.sbb_graph
+                unit.transportation_graph = self.transportation_graph
                 unit.isBorder()
 
     def init_sbb_station(self):
         station_to_delete = []
-        for key, station in self.sbb_graph.sbb_graph.items():
+        for key, station in self.transportation_graph.transportation_graph.items():
             img_pos = glob2img(station.pos, self.border,self.resolution[::-1])
             if (0 < img_pos[0] < self.resolution[0]) and (0 < img_pos[1] < self.resolution[1]):
                 if self.model_array[img_pos[1]][img_pos[0]].on_border:
@@ -78,9 +76,9 @@ class Map:
                 station_to_delete.append(key)
                 #print("station outside switzerland")    
         for key in station_to_delete:
-            for neighbour in self.sbb_graph.sbb_graph[key].neighbour.keys():
-                del self.sbb_graph.sbb_graph[neighbour].neighbour[key]
-            del self.sbb_graph.sbb_graph[key]
+            for neighbour in self.transportation_graph.transportation_graph[key].neighbour.keys():
+                del self.transportation_graph.transportation_graph[neighbour].neighbour[key]
+            del self.transportation_graph.transportation_graph[key]
         for rows in self.model_array:
             for unit in rows:
                 unit.init_neighbour_station() 
@@ -103,7 +101,7 @@ class Map:
             
     def plot_preparation(self, default_map, base_map = False):
         offset = 1
-        scaling = 10000
+        scaling = parameters_config['map']['plot_offset']
         #default_map = np.nan_to_num(default_map, nan = 0.5 - offset )
         if base_map:
             default_map[default_map == 0] = (0.5 - offset)/scaling
@@ -112,7 +110,6 @@ class Map:
         modified_map = np.log((scaling*default_map + offset))/np.log(scaling + offset)
         modified_map[0,0] = -1
         modified_map[-1,-1] = 1
-        print("max: ",np.min(modified_map), "max: ",np.max(modified_map))
         return modified_map
 
     @timeit

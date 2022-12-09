@@ -1,0 +1,33 @@
+{
+    "main": {
+        "country": "USA",
+        "outbreak": "SAN",
+        "outbreak_percentage": 0.1,
+        "iteration": 100,
+        "savefig": true
+    },
+    "data": {
+        "cutoff_density": 0.5
+    },
+    "map": {
+        "resolution": [
+            480,
+            240
+        ],
+        "plot_offset": 10000
+    },
+    "modelunit": {
+        "cutoff_radius": 4,
+        "delta": [
+            0.01,
+            0.01,
+            0.01
+        ],
+        "gamma": 0.001,
+        "alpha": 0.1,
+        "beta": 0.1
+    },
+    "file": {
+        "result_folder": "test/"
+    }
+}

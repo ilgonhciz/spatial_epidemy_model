@@ -1,0 +1,64 @@
+,Airport.ID,Name,City,Country,IATA,Latitude,Longitude,Altitude,Tz.database.time.zone
+3806,4019,Albuquerque International Sunport,Albuquerque,United States,ABQ,35.040199,-106.609001,5355,America/Denver
+3575,3774,Ted Stevens Anchorage International Airport,Anchorage,United States,ANC,61.17440033,-149.9960022,152,America/Anchorage
+3483,3682,Hartsfield Jackson Atlanta International Airport,Atlanta,United States,ATL,33.6367,-84.428101,1026,America/New_York
+3474,3673,Austin Bergstrom International Airport,Austin,United States,AUS,30.19449997,-97.66989899,542,America/Chicago
+3626,3825,Bradley International Airport,Windsor Locks,United States,BDL,41.93889999,-72.68319702,173,America/New_York
+3491,3690,Nashville International Airport,Nashville,United States,BNA,36.12450027,-86.67819977,599,America/Chicago
+3297,3495,Boise Air Terminal/Gowen Field,Boise,United States,BOI,43.5644,-116.223,2871,America/Denver
+3250,3448,General Edward Lawrence Logan International Airport,Boston,United States,BOS,42.36429977,-71.00520325,20,America/New_York
+3445,3644,Bob Hope Airport,Burbank,United States,BUR,34.20069885,-118.3590012,778,America/Los_Angeles
+3650,3849,Baltimore/Washington International Thurgood Marshall Airport,Baltimore,United States,BWI,39.1754,-76.668297,146,America/New_York
+3607,3806,Charleston Air Force Base-International Airport,Charleston,United States,CHS,32.89860153,-80.04049683,46,America/New_York
+3288,3486,Cleveland Hopkins International Airport,Cleveland,United States,CLE,41.4117012,-81.84980011,791,America/New_York
+3677,3876,Charlotte Douglas International Airport,Charlotte,United States,CLT,35.2140007,-80.94309998,748,America/New_York
+3560,3759,John Glenn Columbus International Airport,Columbus,United States,CMH,39.998001,-82.891899,815,America/New_York
+3290,3488,Cincinnati Northern Kentucky International Airport,Cincinnati,United States,CVG,39.04880142,-84.6678009,896,America/New_York
+3304,3502,Dallas Love Field,Dallas,United States,DAL,32.847099,-96.851799,487,America/Chicago
+3322,3520,Ronald Reagan Washington National Airport,Washington,United States,DCA,38.8521,-77.037697,15,America/New_York
+3552,3751,Denver International Airport,Denver,United States,DEN,39.86169815,-104.6729965,5431,America/Denver
+3471,3670,Dallas Fort Worth International Airport,Dallas-Fort Worth,United States,DFW,32.896801,-97.038002,607,America/Chicago
+3446,3645,Detroit Metropolitan Wayne County Airport,Detroit,United States,DTW,42.21239853,-83.35340118,645,America/New_York
+3296,3494,Newark Liberty International Airport,Newark,United States,EWR,40.69250107,-74.16870117,18,America/New_York
+3334,3533,Fort Lauderdale Hollywood International Airport,Fort Lauderdale,United States,FLL,26.072599,-80.152702,9,America/New_York
+3367,3566,William P Hobby Airport,Houston,United States,HOU,29.64539909,-95.27890015,46,America/Chicago
+3515,3714,Washington Dulles International Airport,Washington,United States,IAD,38.94449997,-77.45580292,312,America/New_York
+3351,3550,George Bush Intercontinental Houston Airport,Houston,United States,IAH,29.9843998,-95.34140015,97,America/Chicago
+3386,3585,Indianapolis International Airport,Indianapolis,United States,IND,39.7173,-86.294403,797,America/New_York
+3513,3712,Jacksonville International Airport,Jacksonville,United States,JAX,30.49410057,-81.68789673,30,America/New_York
+3598,3797,John F Kennedy International Airport,New York,United States,JFK,40.63980103,-73.77890015,13,America/New_York
+3678,3877,McCarran International Airport,Las Vegas,United States,LAS,36.08010101,-115.1520004,2181,America/Los_Angeles
+3286,3484,Los Angeles International Airport,Los Angeles,United States,LAX,33.94250107,-118.4079971,125,America/Los_Angeles
+3498,3697,La Guardia Airport,New York,United States,LGA,40.77719879,-73.87259674,21,America/New_York
+3260,3458,Kansas City International Airport,Kansas City,United States,MCI,39.2976,-94.713898,1026,America/Chicago
+3679,3878,Orlando International Airport,Orlando,United States,MCO,28.42939949,-81.30899811,96,America/New_York
+3548,3747,Chicago Midway International Airport,Chicago,United States,MDW,41.785999,-87.752403,620,America/Chicago
+3275,3473,Memphis International Airport,Memphis,United States,MEM,35.04240036,-89.97669983,341,America/Chicago
+3377,3576,Miami International Airport,Miami,United States,MIA,25.79319954,-80.29060364,8,America/New_York
+3518,3717,General Mitchell International Airport,Milwaukee,United States,MKE,42.94720078,-87.89659882,723,America/Chicago
+3659,3858,Minneapolis-St Paul International/Wold-Chamberlain Airport,Minneapolis,United States,MSP,44.882,-93.221802,841,America/Chicago
+3662,3861,Louis Armstrong New Orleans International Airport,New Orleans,United States,MSY,29.99340057,-90.25800323,4,America/Chicago
+3255,3453,Metropolitan Oakland International Airport,Oakland,United States,OAK,37.721298,-122.221001,9,America/Los_Angeles
+3258,3456,Kahului Airport,Kahului,United States,OGG,20.8986,-156.429993,54,Pacific/Honolulu
+3256,3454,Eppley Airfield,Omaha,United States,OMA,41.3032,-95.894096,984,America/Chicago
+3535,3734,Ontario International Airport,Ontario,United States,ONT,34.05599976,-117.6009979,944,America/Los_Angeles
+3631,3830,Chicago O'Hare International Airport,Chicago,United States,ORD,41.9786,-87.9048,672,America/Chicago
+3412,3611,Norfolk International Airport,Norfolk,United States,ORF,36.89459991,-76.20120239,26,America/New_York
+3523,3722,Palm Beach International Airport,West Palm Beach,United States,PBI,26.68320084,-80.09559631,19,America/New_York
+3521,3720,Portland International Airport,Portland,United States,PDX,45.58869934,-122.5979996,31,America/Los_Angeles
+3553,3752,Philadelphia International Airport,Philadelphia,United States,PHL,39.87189865,-75.2410965,36,America/New_York
+3264,3462,Phoenix Sky Harbor International Airport,Phoenix,United States,PHX,33.43429947,-112.012001,1135,America/Phoenix
+3371,3570,Pittsburgh International Airport,Pittsburgh,United States,PIT,40.49150085,-80.23290253,1203,America/New_York
+3427,3626,Raleigh Durham International Airport,Raleigh-durham,United States,RDU,35.87760162,-78.78749847,435,America/New_York
+3608,3807,Reno Tahoe International Airport,Reno,United States,RNO,39.49909973,-119.7679977,4415,America/Los_Angeles
+3594,3793,Southwest Florida International Airport,Fort Myers,United States,RSW,26.53619957,-81.75520325,30,America/New_York
+3532,3731,San Diego International Airport,San Diego,United States,SAN,32.73360062,-117.1900024,17,America/Los_Angeles
+3422,3621,San Antonio International Airport,San Antonio,United States,SAT,29.53370094,-98.46980286,809,America/Chicago
+3378,3577,Seattle Tacoma International Airport,Seattle,United States,SEA,47.449001,-122.308998,433,America/Los_Angeles
+3271,3469,San Francisco International Airport,San Francisco,United States,SFO,37.61899948,-122.375,13,America/Los_Angeles
+3549,3748,Norman Y. Mineta San Jose International Airport,San Jose,United States,SJC,37.362598,-121.929001,62,America/Los_Angeles
+3337,3536,Salt Lake City International Airport,Salt Lake City,United States,SLC,40.78839874,-111.9779968,4227,America/Denver
+3618,3817,Sacramento International Airport,Sacramento,United States,SMF,38.69540024,-121.5910034,27,America/Los_Angeles
+3668,3867,John Wayne Airport-Orange County Airport,Santa Ana,United States,SNA,33.67570114,-117.8679962,56,America/Los_Angeles
+3479,3678,St Louis Lambert International Airport,St. Louis,United States,STL,38.748697,-90.370003,618,America/Chicago
+3447,3646,Tampa International Airport,Tampa,United States,TPA,27.97550011,-82.53320313,26,America/New_York
