@@ -7,4 +7,4 @@
 * Weekly Meetings: https://docs.google.com/document/d/1WjRgGYknTx_IZWcyx3EKL3kB5jwHo4zlZ83-HDmQUWw/edit
 * Final report on overleaf: https://www.overleaf.com/4445946635gfzhqzqmvfmh
 * Google folder with all references: https://drive.google.com/drive/folders/1pHr12b_hbOArYMnK83dygjF9ecZNYtw_
-* Slides for presentation: https://drive.google.com/drive/folders/1pHr12b_hbOArYMnK83dygjF9ecZNYtw_https://docs.google.com/presentation/d/1utnxgHE8n9Cp_1ZQ76-Gh_GFNWxBf3sbgZiKmRR1g5Q/edit?usp=sharing
+* Slides for presentation: https://docs.google.com/presentation/d/1utnxgHE8n9Cp_1ZQ76-Gh_GFNWxBf3sbgZiKmRR1g5Q/edit?usp=sharing
