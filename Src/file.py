@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 import time
+from glob import glob
 timestr = time.strftime("%Y_%m_%d-%H:%M")
 
 PROJECT_ROOT = './'
@@ -46,12 +47,17 @@ class File:
             self.result_folder = self.result_folder[:-1] + "_" + timestr + "/"
         Path(self.result_folder).mkdir(parents=True, exist_ok=True)
 
+    def get_fig_path(self, fig_names = []):
+        self.result_folder = self.result_path + parameters_config['file']['result_folder']
+        return [sorted(glob(self.result_folder + key + "/" + "*.png"), key=lambda x:float(x.split("_")[-1].split(".")[0]) ) for key in fig_names]
 
-    def append_fig(self, fig):
-        self.figures.append(fig)
+    def append_fig(self, fig, **kwargs):
+        self.figures.append([fig, kwargs])
 
     def save_results(self, index = 0, **kwargs):
-        for fig in self.figures:
-            fig.savefig(self.result_folder + kwargs['country'] + "_" + str(index) + ".png")
+        for [fig, fig_args] in self.figures:
+            result_folder = self.result_folder + fig_args['name'] + "/"
+            Path(result_folder).mkdir(parents=True, exist_ok=True)
+            fig.savefig(result_folder + kwargs['country'] + "_" + str(index) + ".png", bbox_inches='tight')
 
 parameters_config = File().load_config()

@@ -53,7 +53,7 @@ class ModelUnit:
                     continue
                 neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
                 if neighbour_unit:
-                    transportation_inflow += neighbour_unit.compute_outflow() / (4 * duration ** 2) 
+                    transportation_inflow += (neighbour_unit.compute_outflow() if neighbour_unit.i < 0.00001 else 0) * (self.cutoff_radius/ 10) / (duration) 
             return transportation_inflow
         else:
             return 0
@@ -68,7 +68,7 @@ class ModelUnit:
                 if self.pos[0] + delta_y >= len(self.parent_model_array) or self.pos[0] + delta_y < 0:
                     continue
                 if math.sqrt(delta_x**2 + delta_y**2) <= 2*self.cutoff_radius/(self.size[0]+self.size[1]):
-                    if delta_x != 0 and delta_y!=0:
+                    if delta_x != 0 or delta_y!=0:
                         if not self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ].empty:
                             neighbour = self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ] 
                             local_inflow += neighbour.outflow / ( math.sqrt(delta_x**2 + delta_y**2))
@@ -82,7 +82,7 @@ class ModelUnit:
 
     def compute_outflow(self):
         #compute the number of people who are leaving the current region
-        self.outflow = self.i * 0.1
+        self.outflow = self.i * 0.1 
         return self.outflow
 
     def evolution_step(self):
@@ -103,6 +103,7 @@ class ModelUnit:
                 if not self.parent_model_array[self.pos[0]+ delta_pos[0]][self.pos[1]+ delta_pos[1]].empty:
                     has_neighbour = True
                     self.neighbour_rel_pos = delta_pos
+                    #self.population = 1
                     break
         self.on_border = self.empty and has_neighbour
 
@@ -125,19 +126,3 @@ class ModelUnit:
             self.population = self.s + self.i + self.r + self.v
 
             self.d += self.gamma * i
-
-
-
-
-
-
-   #not used momentarily
-    def compute_outflow_sbb(self):
-        neighbour_inflow = 0
-        if self.stations:
-            for station in self.stations:
-                for neighbourID in station.neighbour.keys():
-                    neighbour_pos = self.transportation_graph.get_img_pos(neighbourID)
-                    neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
-                    neighbour_inflow += neighbour_unit.compute_outflow()
-        return self.outflow + neighbour_inflow

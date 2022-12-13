@@ -2,32 +2,32 @@
     "main": {
         "country": "USA",
         "outbreak": "SAN",
-        "outbreak_percentage": 0.1,
-        "iteration": 100,
+        "outbreak_percentage": 0.5,
+        "iteration": 365,
         "savefig": true
     },
     "data": {
-        "cutoff_density": 0.5
+        "cutoff_density": 0.0
     },
     "map": {
         "resolution": [
             480,
             240
         ],
-        "plot_offset": 10000
+        "plot_offset": 30000
     },
     "modelunit": {
-        "cutoff_radius": 4,
+        "cutoff_radius": 3,
         "delta": [
             0.01,
             0.01,
             0.01
         ],
-        "gamma": 0.001,
-        "alpha": 0.1,
-        "beta": 0.1
+        "gamma": 0.0005,
+        "alpha": 0.005,
+        "beta": 0.005
     },
     "file": {
-        "result_folder": "test/"
+        "result_folder": "USA/"
     }
 }

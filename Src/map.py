@@ -14,7 +14,7 @@ class BoundingBox:
 class Map:
     def __init__(self, population_map, graph, border, country = "CH"):
         self.resolution = parameters_config['map']['resolution'] #format x y
-        
+        self.full_statistic = {"total":{'p':[],'s':[],'i':[],'r':[],'v':[],'d':[]}}
         self.transportation_graph = graph
         self.country = country
         self.border = border#BoundingBox(border.left,border.bottom, border.right, border.top)
@@ -47,7 +47,8 @@ class Map:
         self.map_array *= math.prod(self.original_resolution)/math.prod(self.resolution)
         if normalizing:
             self.map_array /= np.nanmax(self.map_array)
-        
+        self.normalization_factor = np.nanmax(self.map_array)
+
     def init_model(self):
         size = [0.1 *self.original_resolution[0]/self.resolution[0],0.1 *self.original_resolution[1]/self.resolution[1]]
         self.model_array = [[ModelUnit(self.map_array[y,x], [y,x], size=size) for x in range(self.resolution[0])] for y in range(self.resolution[1])]
@@ -104,7 +105,7 @@ class Map:
         scaling = parameters_config['map']['plot_offset']
         #default_map = np.nan_to_num(default_map, nan = 0.5 - offset )
         if base_map:
-            default_map[default_map == 0] = (0.5 - offset)/scaling
+            default_map[default_map == 0] = (0.05 - offset)/scaling
         #default_map[ default_map<= 0.001] = 0.5
         #default_map[default_map<1e-5]=1e-5
         modified_map = np.log((scaling*default_map + offset))/np.log(scaling + offset)
@@ -114,6 +115,7 @@ class Map:
 
     @timeit
     def update_map(self):
+        full_statistic = {"total":{'p':0,'s':0,'i':0,'r':0,'v':0,'d':0}}
         for rows in self.model_array:
             for unit in rows:
                 if not unit.empty:
@@ -122,7 +124,18 @@ class Map:
             for unit in rows:
                 if not unit.empty:
                     unit.update()
-        
+                    self.collect_statistic(full_statistic,unit)
+        for key, item in full_statistic['total'].items():
+            self.full_statistic['total'][key].append(item * self.normalization_factor)
+    
+    def collect_statistic(self, full_statistic, unit):
+        full_statistic['total']['p'] += unit.population
+        full_statistic['total']['s'] += unit.s
+        full_statistic['total']['i'] += unit.i
+        full_statistic['total']['r'] += unit.r
+        full_statistic['total']['v'] += unit.v
+        full_statistic['total']['d'] += unit.d
+
 
 if __name__ == "__main__":
     CH_map = Map()
