@@ -62,7 +62,7 @@
     ],
 }
 ```
-![results_CH_default](https://user-images.githubusercontent.com/56004270/207819684-c56619ed-834d-4d95-bd81-c5f8fbdc0eef.gif)
+![results_CH_default](https://user-images.githubusercontent.com/56004270/207874819-83198ead-50da-46bf-8b8d-0b3e0deb13a1.gif)
 
 
 #### CH no vaccination but with travel restriction
@@ -77,7 +77,7 @@
     ],
 }
 ```
-![results_CH_lockdown](https://user-images.githubusercontent.com/56004270/207819772-377dff69-03c6-4f80-a678-2ad2f6b5a17e.gif)
+![results_CH_lockdown](https://user-images.githubusercontent.com/56004270/207874909-c7f199ba-025c-478b-b3c3-e6a1a7a4487c.gif)
 
 #### CH both vaccination and travel restriction
 ```json
@@ -91,7 +91,7 @@
     ],
 }
 ```
-![results_CH_lockdown_vac](https://user-images.githubusercontent.com/56004270/207819825-c3211c05-c1c4-4710-b6ed-14c7607b4bd9.gif)
+![results_CH_lockdown_vac](https://user-images.githubusercontent.com/56004270/207874971-1e2b5389-ca38-46df-a387-ce79fbc4400a.gif)
 
 ### USA: Simulated Country USA, Initial Outbreak Point Newark Liberty International Airport (EWR) 
 ```json
@@ -115,7 +115,7 @@
     ],
 }
 ```
-![results_USA_default](https://user-images.githubusercontent.com/56004270/207819985-8ef664e1-f08d-47a7-8082-acbc5b3921d1.gif)
+![results_USA_default](https://user-images.githubusercontent.com/56004270/207875016-4e486c82-1e4f-477d-a519-4b979ac6b700.gif)
 
 #### USA no vaccination but with travel restriction
 ```json
@@ -129,7 +129,7 @@
     ],
 }
 ```
-![results_USA_lockdown](https://user-images.githubusercontent.com/56004270/207819976-451711e5-00ea-4944-93d6-eb059b0d824b.gif)
+![results_USA_lockdown](https://user-images.githubusercontent.com/56004270/207875051-87b84813-b31d-4088-8664-94f0f1307a6f.gif)
 
 #### USA both vaccination and travel restriction
 ```json
@@ -143,7 +143,7 @@
     ],
 }
 ```
-![results_USA_lockdown_vac](https://user-images.githubusercontent.com/56004270/207819964-441e4523-38f1-4777-b23a-99d9560a78d7.gif)
+![results_USA_lockdown_vac](https://user-images.githubusercontent.com/56004270/207875119-099888dd-45c2-41fa-82d2-13126c0ec34e.gif)
 
 
 ## Useful Websites
