@@ -1,7 +1,7 @@
-numpy 
-opencv-python
+numpy
+opencv-python 
 rasterio
-scipy == 1.9.3
+scipy 
 matplotlib
 pandas
 pySBB
