@@ -6,6 +6,17 @@ from usmod import USA_Air_Graph
 from map import Map
 fig,ax = plt.subplots()
 fig2,ax2 = plt.subplots()
+ax2b = ax2.twinx()
+size_label = [14, 18, 16, 16] 
+ax2.grid(visible=True, alpha=0.5)
+ax2.xaxis.set_tick_params(labelsize=size_label[3])
+ax2.yaxis.set_tick_params(labelsize=size_label[3])
+ax2b.yaxis.set_tick_params(labelsize=size_label[3])
+
+
+#ax2.yaxis.set_major_formatter(lambda x, pos: "%.f"%((x)/1e6 ))
+
+plot_color = {'p':'limegreen', 's':'green', 'i':'red', 'r':'blue', 'v':'deepskyblue', 'd':'black'}
 
 fig.set_size_inches(16,7)
 fig2.set_size_inches(16,3)
@@ -42,11 +53,25 @@ def main():
     for i in range(number_of_iteration):
         ax.clear()
         ax2.clear()
+        ax2.set_xlabel("Days", fontsize=size_label[2])
+        ax2.set_ylabel("Number in Mio", fontsize=size_label[2])
+        ax2b.set_ylabel("Deaths", fontsize=size_label[2])
+        lines = []
         for key, item in map.full_statistic['total'].items():
-            ax2.plot(range(len(item)), item, label=key)
-        ax2.legend()
+            if key in ['p']:
+                continue
+            if key == "d":
+                lines += ax2b.plot(range(len(item)), item, label=key, color= plot_color[key], linewidth=2)
+            else:
+                lines += ax2.plot(range(len(item)), item, label=key, color= plot_color[key])
+        
+        ax2.legend(lines, [line.get_label() for line in lines], fontsize=size_label[3],bbox_to_anchor=(0, 0.9), loc="upper left")
         ax.set_title("Day: {}".format(i))
-        graph.plot_sub_sbb_graph(graph.get_ID_name(),ax, color='green', markersize=0.9,marker='.', alpha = 0.02)
+        if country == "USA":
+            alpha = 0.02
+        else:
+            alpha = 0.07
+        graph.plot_sub_sbb_graph(graph.get_ID_name(),ax, color='green', markersize=0.9,marker='.', alpha = alpha)
         ax.imshow(map.get_map_array('p_raw'),cmap="PRGn" , alpha= 0.9)
         map.update_map()
         #ax.imshow(map.get_map_array('i'),cmap="bwr" , alpha= 0.6)
