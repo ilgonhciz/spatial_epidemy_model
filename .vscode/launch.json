@@ -21,10 +21,10 @@
             "justMyCode": true
         }, 
         {
-            "name": "ode",
+            "name": "utils",
             "type": "python",
             "request": "launch",
-            "program": "Equations_Solving.py",
+            "program": "Src/utils.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
