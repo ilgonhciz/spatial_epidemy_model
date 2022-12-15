@@ -1,9 +1,7 @@
 # spatial_epidemy_model
-CH:
-https://drive.google.com/file/d/1IwCqmpoq7oxZSHMd_fEXv_3qU-3hV-Jf/view?usp=share_link
 
-[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)
-![CH_0](https://user-images.githubusercontent.com/56004270/207816265-5d77ae9a-8dac-4894-8463-af22d5cacbda.png)
+![CH_0](https://user-images.githubusercontent.com/56004270/207816265-5d77ae9a-8dac-4894-8463-af22d5cacbda.png)(https://drive.google.com/file/d/1IwCqmpoq7oxZSHMd_fEXv_3qU-3hV-Jf/view?usp=share_link
+)
 
 ## Useful Websites
 * Transportation Graph of SBB: https://www.kaggle.com/code/kmader/simple-traverse-of-sbb-graph
