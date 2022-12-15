@@ -1,7 +1,150 @@
 # spatial_epidemy_model
+## Default Parameters
+```json
+{
+    "main": {
+        "country": "CH",
+        "outbreak": "ZUE",
+        "outbreak_percentage": 0.0001,
+        "iteration": 2000,
+        "savefig": true
+    },
+    "data": {
+        "cutoff_density": 0.0
+    },
+    "map": {
+        "resolution": [
+            800,
+            400
+        ],
+        "plot_offset": 30000,
+        "lockdown_condition_type":"d",
+        "lockdown_threshhold": -1
+    },
+    "modelunit": {
+        "cutoff_radius": 2,
+        "delta": [
+            0.00,
+            0.000,
+            0.000
+        ],
+        "gamma": 0.00002,
+        "alpha": 0.005,
+        "beta": 0.005,
+        "epsilon":[0.0003, 0.0001],
+        "k":0.02
+    },
+    "file": {
+        "result_folder": "CH_Presentation/"
+    }
+}
+```
 
-![CH_0](https://user-images.githubusercontent.com/56004270/207816265-5d77ae9a-8dac-4894-8463-af22d5cacbda.png)(https://drive.google.com/file/d/1IwCqmpoq7oxZSHMd_fEXv_3qU-3hV-Jf/view?usp=share_link
-)
+## Result Cases
+### CH: Simulated Country Switzerland, Initial Outbreak Point Zuerich (ZUE) 
+```json
+{
+  "country": "CH",  
+  "outbreak": "ZUE",
+  "outbreak_percentage": 0.0001,
+  "cutoff_radius": 2,
+}
+```
+#### CH no vaccination no travel restriction
+```json
+{
+    "lockdown_condition_type":"d",
+    "lockdown_threshhold": -1,
+    "delta": [
+        0.000,
+        0.000,
+        0.000
+    ],
+}
+```
+![results_CH_default](https://user-images.githubusercontent.com/56004270/207819684-c56619ed-834d-4d95-bd81-c5f8fbdc0eef.gif)
+
+
+#### CH no vaccination but with travel restriction
+```json
+{
+    "lockdown_condition_type":"d",
+    "lockdown_threshhold": 100,
+    "delta": [
+        0.000,
+        0.000,
+        0.000
+    ],
+}
+```
+![results_CH_lockdown](https://user-images.githubusercontent.com/56004270/207819772-377dff69-03c6-4f80-a678-2ad2f6b5a17e.gif)
+
+#### CH both vaccination and travel restriction
+```json
+{
+    "lockdown_condition_type":"d",
+    "lockdown_threshhold": -1,
+    "delta": [
+        0.005,
+        0.000,
+        0.000
+    ],
+}
+```
+![results_CH_lockdown_vac](https://user-images.githubusercontent.com/56004270/207819825-c3211c05-c1c4-4710-b6ed-14c7607b4bd9.gif)
+
+### USA: Simulated Country USA, Initial Outbreak Point Newark Liberty International Airport (EWR) 
+```json
+{
+  "country": "USA",
+  "outbreak": "EWR",
+  "outbreak_percentage": 0.0001,
+  "cutoff_radius": 2,
+}
+```
+
+#### USA no vaccination no travel restriction
+```json
+{
+    "lockdown_condition_type":"i",
+    "lockdown_threshhold": -1,
+    "delta": [
+        0.000,
+        0.000,
+        0.000
+    ],
+}
+```
+![results_USA_default](https://user-images.githubusercontent.com/56004270/207819985-8ef664e1-f08d-47a7-8082-acbc5b3921d1.gif)
+
+#### USA no vaccination but with travel restriction
+```json
+{
+    "lockdown_condition_type":"i",
+    "lockdown_threshhold": 100,
+    "delta": [
+        0.000,
+        0.000,
+        0.000
+    ],
+}
+```
+![results_USA_lockdown](https://user-images.githubusercontent.com/56004270/207819976-451711e5-00ea-4944-93d6-eb059b0d824b.gif)
+
+#### USA both vaccination and travel restriction
+```json
+{
+    "lockdown_condition_type":"i",
+    "lockdown_threshhold": 100,
+    "delta": [
+        0.005,
+        0.000,
+        0.000
+    ],
+}
+```
+![results_USA_lockdown_vac](https://user-images.githubusercontent.com/56004270/207819964-441e4523-38f1-4777-b23a-99d9560a78d7.gif)
+
 
 ## Useful Websites
 * Transportation Graph of SBB: https://www.kaggle.com/code/kmader/simple-traverse-of-sbb-graph
