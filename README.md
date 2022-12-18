@@ -1,5 +1,20 @@
 # spatial_epidemy_model
-## Default Parameters
+# Getting stated 
+If you want to simulate this spatial model on your machine and play around with different paramenter settings. 
+clone the repository onto your local machine 
+
+`git clone https://github.com/ilgonhciz/spatial_epidemy_model.git`
+
+Then navigate into the folder and do 
+
+`pip install -r requirements.txt`
+
+Now you are ready to run the code. 
+
+In case you have VScode installed, you can simple open the project and press `Ctrl + F5` to run the program
+
+
+# Default Parameters
 ```json
 {
     "main": {
