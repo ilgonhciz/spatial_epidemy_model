@@ -1,9 +1,9 @@
 {
     "main": {
-        "country": "USA",
-        "outbreak": "SAN",
-        "outbreak_percentage": 0.5,
-        "iteration": 365,
+        "country": "CH",
+        "outbreak": "ZUE",
+        "outbreak_percentage": 0.0001,
+        "iteration": 2000,
         "savefig": true
     },
     "data": {
@@ -11,23 +11,27 @@
     },
     "map": {
         "resolution": [
-            480,
-            240
+            800,
+            400
         ],
-        "plot_offset": 30000
+        "plot_offset": 30000,
+        "lockdown_condition_type":"d",
+        "lockdown_threshhold": 100
     },
     "modelunit": {
-        "cutoff_radius": 3,
+        "cutoff_radius": 2,
         "delta": [
-            0.01,
-            0.01,
-            0.01
+            0.005,
+            0.000,
+            0.000
         ],
-        "gamma": 0.0005,
+        "gamma": 0.00002,
         "alpha": 0.005,
-        "beta": 0.005
+        "beta": 0.005,
+        "epsilon":[0.0003, 0.0001],
+        "k":0.02
     },
     "file": {
-        "result_folder": "USA/"
+        "result_folder": "CH_Presentation_lockdown_vac/"
     }
 }

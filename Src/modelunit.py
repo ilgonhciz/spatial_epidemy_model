@@ -9,6 +9,8 @@ class ModelUnit:
         self.gamma = parameters_config["modelunit"]["gamma"]
         self.alpha = parameters_config["modelunit"]["alpha"]
         self.beta = parameters_config["modelunit"]["beta"]
+        self.epsilon = parameters_config["modelunit"]["epsilon"]
+        self.k = parameters_config["modelunit"]["k"]
         
         self.pos = position
         self.size = size
@@ -17,7 +19,8 @@ class ModelUnit:
         self.transportation_graph = None
 
 
-        self.cutoff_delta = [int(self.cutoff_radius//size[0]), int(self.cutoff_radius//size[1])]
+        self.cutoff_delta = [max(1, int(self.cutoff_radius//size[0])), max(1,int(self.cutoff_radius//size[1]))]
+        self.cutoff_radius = 1.5 * max(max(size), self.cutoff_radius)
         self.population = local_population_density if local_population_density > 1e-5 else 0
         self.empty = False if local_population_density > 1e-5 else True
         
@@ -36,6 +39,8 @@ class ModelUnit:
 
         self.inflow = 0
         self.outflow = 0
+        self.lockdown = False
+        self.normalization_factor = 1
 
     def init_neighbour_station(self):
         if self.stations:
@@ -53,7 +58,7 @@ class ModelUnit:
                     continue
                 neighbour_unit = self.parent_model_array[neighbour_pos[1]][neighbour_pos[0]]
                 if neighbour_unit:
-                    transportation_inflow += (neighbour_unit.compute_outflow() if neighbour_unit.i < 0.00001 else 0) * (self.cutoff_radius/ 10) / (duration) 
+                    transportation_inflow += (neighbour_unit.compute_outflow()) / (duration ** 2) 
             return transportation_inflow
         else:
             return 0
@@ -71,18 +76,21 @@ class ModelUnit:
                     if delta_x != 0 or delta_y!=0:
                         if not self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ].empty:
                             neighbour = self.parent_model_array[self.pos[0] + delta_y][self.pos[1] + delta_x ] 
-                            local_inflow += neighbour.outflow / ( math.sqrt(delta_x**2 + delta_y**2))
+                            local_inflow += neighbour.outflow * (self.cutoff_radius/ 10) / ( delta_x**2 + delta_y**2)
         return local_inflow
 
     def compute_inflow(self):
         #extract the number of infected people coming from the outside
-        self.inflow = self.compute_inflow_transport() + self.compute_inflow_local() # +
+        if self.lockdown:
+            self.inflow = self.compute_inflow_local()
+        else:
+            self.inflow = float(math.floor(self.compute_inflow_transport() * self.normalization_factor))/ self.normalization_factor + self.compute_inflow_local() # +
         return self.inflow * self.population
         #return 0
 
     def compute_outflow(self):
         #compute the number of people who are leaving the current region
-        self.outflow = self.i * 0.1 
+        self.outflow = self.i * self.k
         return self.outflow
 
     def evolution_step(self):
@@ -108,17 +116,17 @@ class ModelUnit:
         self.on_border = self.empty and has_neighbour
 
     def update_SIR(self):
-        input = min(self.s, self.inflow)
+        input = min(self.s, self.inflow) 
         s = self.s
         i = self.i
         r = self.r
         v = self.v
         p = self.population
         if p>0:
-            self.s = s - self.alpha * i * s / p - self.delta[0]*s - input
+            self.s = s - self.alpha * i * s / p - self.delta[0]*s - input + self.epsilon[0] * r + self.epsilon[1] * v
             self.i = i + self.alpha * i * s / p - (self.beta + self.gamma) * i - self.delta[1] * i + input
-            self.r = r + self.beta * i - self.delta[2] * r
-            self.v = v + self.delta[0] * s + self.delta[1] * i + self.delta[2] * r
+            self.r = r + self.beta * i - self.delta[2] * r - self.epsilon[0] * r
+            self.v = v + self.delta[0] * s + self.delta[1] * i + self.delta[2] * r  - self.epsilon[1] * v
             self.s = min(max(0, self.s), self.population)
             self.i = min(max(0, self.i), self.population)
             self.r = min(max(0, self.r), self.population)

@@ -14,6 +14,10 @@ class BoundingBox:
 class Map:
     def __init__(self, population_map, graph, border, country = "CH"):
         self.resolution = parameters_config['map']['resolution'] #format x y
+        self.lockdown_threshhold = parameters_config["map"]["lockdown_threshhold"]
+        self.lockdown_condition_type = parameters_config["map"]["lockdown_condition_type"]
+
+        self.lockdown = False
         self.full_statistic = {"total":{'p':[],'s':[],'i':[],'r':[],'v':[],'d':[]}}
         self.transportation_graph = graph
         self.country = country
@@ -42,20 +46,25 @@ class Map:
         print("finished initializing")    
 
     def resample(self, population , normalizing = True):
-        self.map_array = cv2.resize(population, self.resolution)
+        self.map_array = cv2.resize(population, tuple(self.resolution))
         #self.map_array = cv2.GaussianBlur(self.map_array,(1,1),0)
         self.map_array *= math.prod(self.original_resolution)/math.prod(self.resolution)
         if normalizing:
-            self.map_array /= np.nanmax(self.map_array)
-        self.normalization_factor = np.nanmax(self.map_array)
+            self.normalization_factor = np.nanmax(self.map_array)
+            self.map_array /= self.normalization_factor
 
     def init_model(self):
-        size = [0.1 *self.original_resolution[0]/self.resolution[0],0.1 *self.original_resolution[1]/self.resolution[1]]
+        if self.country == "USA":
+            cell_size = 1
+        else: 
+            cell_size = 0.1 
+        size = [cell_size *self.original_resolution[0]/self.resolution[0],cell_size *self.original_resolution[1]/self.resolution[1]]
         self.model_array = [[ModelUnit(self.map_array[y,x], [y,x], size=size) for x in range(self.resolution[0])] for y in range(self.resolution[1])]
         for rows in self.model_array:
             for unit in rows:
                 unit.parent_model_array = self.model_array
                 unit.transportation_graph = self.transportation_graph
+                unit.normalization_factor = self.normalization_factor
                 unit.isBorder()
 
     def init_sbb_station(self):
@@ -119,15 +128,20 @@ class Map:
         for rows in self.model_array:
             for unit in rows:
                 if not unit.empty:
+                    unit.lockdown = self.lockdown
                     unit.evolution_step()
         for rows in self.model_array:
             for unit in rows:
                 if not unit.empty:
                     unit.update()
                     self.collect_statistic(full_statistic,unit)
+        if self.lockdown_threshhold > 0.0:
+            self.lockdown = ((full_statistic['total'][self.lockdown_condition_type] * self.normalization_factor) > self.lockdown_threshhold)
         for key, item in full_statistic['total'].items():
-            self.full_statistic['total'][key].append(item * self.normalization_factor)
-    
+            if key != "d":
+                self.full_statistic['total'][key].append(item * self.normalization_factor /1e6)
+            else:
+                self.full_statistic['total'][key].append(math.floor(item * self.normalization_factor))
     def collect_statistic(self, full_statistic, unit):
         full_statistic['total']['p'] += unit.population
         full_statistic['total']['s'] += unit.s
