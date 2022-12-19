@@ -1,4 +1,12 @@
-# spatial_epidemy_model
+# Spatial Epidemy Model
+This repository provide the source code to model the spatial spreading of disease on a country level. The framework allows the user to incorporate different layers of spreading medium: 
+
+1. Local transmission (usually involving short distance movement e.g. foot, bus) and 
+
+2. long distance travel e.g. train, airplane. 
+
+A example is already done for the USA and Switzerland. 
+
 # Getting stated 
 If you want to simulate this spatial model on your machine and play around with different paramenter settings. 
 clone the repository onto your local machine 
@@ -160,12 +168,7 @@ In case you have VScode installed, you can simple open the project and press `Ct
 ```
 ![results_USA_lockdown_vac](https://user-images.githubusercontent.com/56004270/207875119-099888dd-45c2-41fa-82d2-13126c0ec34e.gif)
 
-
 ## Useful Websites
 * Transportation Graph of SBB: https://www.kaggle.com/code/kmader/simple-traverse-of-sbb-graph
 * Population Data: https://hub.worldpop.org/geodata/listing?id=69
 * Geo Data Visualization Methods: https://towardsdatascience.com/visualising-global-population-datasets-with-python-c87bcfc8c6a6
-* Weekly Meetings: https://docs.google.com/document/d/1WjRgGYknTx_IZWcyx3EKL3kB5jwHo4zlZ83-HDmQUWw/edit
-* Final report on overleaf: https://www.overleaf.com/4445946635gfzhqzqmvfmh
-* Google folder with all references: https://drive.google.com/drive/folders/1pHr12b_hbOArYMnK83dygjF9ecZNYtw_
-* Slides for presentation: https://docs.google.com/presentation/d/1utnxgHE8n9Cp_1ZQ76-Gh_GFNWxBf3sbgZiKmRR1g5Q/edit?usp=sharing
